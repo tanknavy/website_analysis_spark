@@ -190,5 +190,7 @@
 	<classpathentry kind="lib" path="C:/software/hadoop-2.8.3/share/hadoop/common/lib/activation-1.1.jar"/>
 	<classpathentry kind="lib" path="C:/software/hadoop-2.8.3/share/hadoop/common/hadoop-nfs-2.8.3.jar"/>
 	<classpathentry kind="lib" path="C:/software/hadoop-2.8.3/share/hadoop/common/hadoop-common-2.8.3.jar"/>
+	<classpathentry kind="lib" path="C:/software/scala/lib/scala-library.jar"/>
+	<classpathentry kind="lib" path="C:/software/spark-2.3.3-bin-hadoop2.7/jars/spark-core_2.11-2.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
