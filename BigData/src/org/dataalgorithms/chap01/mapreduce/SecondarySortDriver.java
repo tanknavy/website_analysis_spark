@@ -22,7 +22,7 @@ public class SecondarySortDriver  extends Configured implements Tool {
 
 	private static Logger theLogger = Logger.getLogger(SecondarySortDriver.class);
 
-        @Override
+    @Override
 	public int run(String[] args) throws Exception {
 
     	Configuration conf = getConf();

@@ -1,0 +1,15 @@
+com\github\tanknavy\avro\Review$1.class
+com\github\tanknavy\kafka\producer\AppConfig.class
+com\github\tanknavy\kafka\producer\runnable\ReviewsFetcherThread.class
+com\github\tanknavy\avro\Review.class
+com\github\tanknavy\avro\User$1.class
+com\github\tanknavy\kafka\producer\model\ReviewApiResponse.class
+com\github\tanknavy\avro\Review$Builder.class
+com\github\tanknavy\kafka\producer\ReviewsProducerMain.class
+com\github\tanknavy\kafka\producer\runnable\ReviewsAvroProducerThread.class
+com\github\tanknavy\avro\Course$1.class
+com\github\tanknavy\avro\Course$Builder.class
+com\github\tanknavy\avro\Course.class
+com\github\tanknavy\avro\User.class
+com\github\tanknavy\avro\User$Builder.class
+com\github\tanknavy\kafka\producer\client\AlexRESTClient.class

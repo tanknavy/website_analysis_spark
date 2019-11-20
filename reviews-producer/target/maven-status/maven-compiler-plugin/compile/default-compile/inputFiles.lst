@@ -1,0 +1,9 @@
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\kafka\producer\AppConfig.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\kafka\producer\client\AlexRESTClient.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\kafka\producer\runnable\ReviewsAvroProducerThread.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\avro\Course.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\kafka\producer\model\ReviewApiResponse.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\kafka\producer\runnable\ReviewsFetcherThread.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\avro\User.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\kafka\producer\ReviewsProducerMain.java
+D:\Code\git\reviews-producer\src\main\java\com\github\tanknavy\avro\Review.java
