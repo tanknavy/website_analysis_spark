@@ -21,6 +21,12 @@ public class StringTest {
 		System.out.println(tmp);
 		System.out.println(tmp == "abcdef"); //引用类型比较的是地址
 		System.out.println(tmp.equals("abcdef")); // 用equals
+		
+		
+		//final String x = null; //final不可以改变
+		String x = null; //final不可以改变
+		x= "aa";
+		System.out.println(x);
 	}
 
 }

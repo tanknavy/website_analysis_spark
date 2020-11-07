@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.AnalysisException;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
@@ -26,7 +25,7 @@ public class MockData {
 	//public static void mock(JavaSparkContext sc, SparkSession sparkSession){ // 2.0版使用SparkSession
 		List<Row> rows = new ArrayList<Row>();
 		
-		String[] searchKeyWords = new String[]{"iPhone","iPad","iWatch","Samsung s10","pixel","iPod","SSD","Laptop","vocation","hotel","ticket"};
+		String[] searchKeyWords = new String[]{"iPhone","度假","iPad","iWatch","Samsung s10","pixel","iPod","SSD","Laptop","vocation","hotel","ticket"};
 		String[] actions = new String[]{"search","click","order","pay"};
 		String date = DateUtils.getTodayDate();
 		Random random = new Random();
@@ -40,7 +39,7 @@ public class MockData {
 				
 				Long clickCategoryId = null;
 				
-				for(int k=0;k<random.nextInt(100);k++){ //某个个用户的某个会话的某个行为
+				for(int k=0;k<random.nextInt(100);k++){ //某个用户的某个会话的某个行为
 					long pageid = random.nextInt(10);
 					String actionTime = baseActionTime + ":" + StringUtils.fulfuill(String.valueOf(random.nextInt(3)))
 							+ ":"  + StringUtils.fulfuill(String.valueOf(random.nextInt(59))); // 追加上分钟和秒
@@ -101,10 +100,11 @@ public class MockData {
 		//Dataset<Row> rfDataset = spark.createDataFrame(rowRDD, rfSchema); //从rdd创建dataFrame
 		//DataFrame df = sqlContext.createDataFrame(rowsRDD, schema); // DataFrame是DataSet的一种特殊类型
 		Dataset<Row> df = sqlContext.createDataFrame(rowsRDD, schema); // 从sqlContext中创建dataframe
+		
 		//Dataset<Row> df = sparkSession.createDataFrame(rowsRDD, schema); // SparkSession
 		//df.registerTempTable("user_visit_action"); // 过时了
-		//df.createGlobalTempView("user_visit_action"); // 表创建和访问global_temp.table
-		df.createOrReplaceGlobalTempView("user_visit_action"); //可能创建不成功
+		//df.createGlobalTempView("user_visit_action"); // 表创建和访问格式global_temp.table
+		df.createOrReplaceGlobalTempView("user_visit_action"); //可能创建不成功,表访问格式global_temp.table
 		
 		//for(Row _row: df.take(1)){
 		for(Row _row: df.takeAsList(1)){ //取第一行数据测试

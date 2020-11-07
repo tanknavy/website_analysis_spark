@@ -1,9 +1,13 @@
 package com.tanknavy.spark_www.util;
 
+import org.apache.hadoop.hive.ql.parse.HiveParser.ifExists_return;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.tanknavy.spark_www.conf.ConfigurationManager;
+import com.tanknavy.spark_www.constant.Constants;
 
 /**
  * 参数工具类
@@ -25,6 +29,24 @@ public class ParamUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}  
+		return null;
+	}
+	
+	// 本地模式在配置文件中指定taskid,生产模式从命令行读取
+	public static Long getTaskIdFromArgsLocal(String[] args, String taskType) {
+		boolean local = ConfigurationManager.getBoolean(Constants.SPARK_LOCAL);
+		if(local){
+			return ConfigurationManager.getLong(taskType);
+		}else{
+			try {
+				if(args != null && args.length > 0) {
+					return Long.valueOf(args[0]);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}  
+		}
+		
 		return null;
 	}
 	

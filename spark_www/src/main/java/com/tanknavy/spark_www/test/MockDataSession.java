@@ -57,7 +57,8 @@ public class MockDataSession {
 						if(clickCategoryId == null){
 							clickCategoryId = Long.valueOf(String.valueOf(random.nextInt(100)));
 						}
-						clickCategoryId = Long.valueOf(String.valueOf(random.nextInt(100)));
+						//clickCategoryId = Long.valueOf(String.valueOf(random.nextInt(100)));
+						clickProductId = Long.valueOf(String.valueOf(random.nextInt(100)));
 					} else if ("order".equals(action)){
 						orderCategoryIds  = String.valueOf(random.nextInt(100));
 						orderProductIds = String.valueOf(random.nextInt(100));

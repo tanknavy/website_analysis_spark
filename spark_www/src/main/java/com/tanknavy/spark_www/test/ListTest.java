@@ -1,12 +1,11 @@
 package com.tanknavy.spark_www.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.hadoop.hive.ql.parse.HiveParser_IdentifiersParser.intervalLiteral_return;
-import org.apache.spark.sql.execution.columnar.LONG;
 
 import scala.Char;
 
@@ -78,7 +77,40 @@ public class ListTest {
 		
 		System.out.println("Integer.valueOf-----------------------------");
 		int oldValue = Integer.valueOf(Char.char2int('a'));
+		int oldValue2 = Integer.valueOf('b');
 		System.out.println(oldValue + 1);
+		System.out.println(oldValue2 + 1);
+		
+		System.out.println("final List-----------------------------");
+		
+		final List<Integer> sessionList = new ArrayList<>(); // Coolection中元素不能是原始类型，只有Array可以
+		for (int i = 0;i <5;i++){
+			sessionList.add(i);
+			//System.out.println(sessionList[i]); //列表没有index
+		}
+		Iterator<Integer> it = sessionList.iterator();
+		while(it.hasNext()){
+			System.out.println(it.next());
+		}
+		
+		String[] arr6 = new String[10];
+		arr6[1] = "aa";
+		System.out.println(arr6.length);
+		System.out.println(arr6[2]);
+		
+		int[] arr7 = new int[10];
+		arr7[1] = 11;
+		System.out.println(arr7.length);
+		System.out.println(arr7[2]);
+		
+		String[] arr8 = new String[]{"aa","bb","cc","dd"};
+		for(String e:arr8){
+			System.out.println(e);
+		}
+		
+		
+		
+		
 		
 	}
 

@@ -54,7 +54,7 @@ public class JDBCHelper { // 避免硬编码
 			String url = ConfigurationManager.getProperty(Constants.JDBC_URL);
 			String user = ConfigurationManager.getProperty(Constants.JDBC_USER);
 			String pass = ConfigurationManager.getProperty(Constants.JDBC_PASSWORD);
-			try {
+			try { //前面Class.forName("com.mysql.jdbc.Driver")已经加载了驱动类
 				Connection conn = DriverManager.getConnection(url,user,pass);
 				//System.out.println(conn == null); //测试是否有产生连接
 				//System.out.println(datasource ==null); //测试是否可以压栈
@@ -88,7 +88,7 @@ public class JDBCHelper { // 避免硬编码
 		try{
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			if (params !=null && params.length >0){
+			if (params !=null && params.length >0){ //先检查参数不为空切有值才能继续
 				for(int i=0;i<params.length;i++){ //参数数组
 					pstmt.setObject(i+1, params[i]);
 				}
@@ -129,7 +129,7 @@ public class JDBCHelper { // 避免硬编码
 				}
 			}
 			rs = pstmt.executeQuery();
-			callback.process(rs);// 处理查询结果集
+			callback.process(rs);// 引用接口，处理查询结果集
 			
 		}catch (Exception e){
 			e.printStackTrace();
@@ -184,7 +184,7 @@ public class JDBCHelper { // 避免硬编码
 		
 	}
 	
-	public static interface QueryCallback{ //静态内部类：查询回调接口
+	public  interface QueryCallback{ //静态内部类：查询回调接口
 		void process(ResultSet rs) throws Exception;
 	}
 	

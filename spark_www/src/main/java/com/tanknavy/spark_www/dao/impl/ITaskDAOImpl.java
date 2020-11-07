@@ -22,7 +22,7 @@ public class ITaskDAOImpl implements ITaskDAO{
 		Object[] params = new Object[]{taskid};
 		
 		JDBCHelper jdbcHelper = JDBCHelper.getInstance();
-		jdbcHelper.exeQuery(sql, params, new JDBCHelper.QueryCallback() { // 查询回调
+		jdbcHelper.exeQuery(sql, params, new JDBCHelper.QueryCallback() { // 查询回调，匿名内部类实现
 			
 			@Override
 			public void process(ResultSet rs) throws Exception {

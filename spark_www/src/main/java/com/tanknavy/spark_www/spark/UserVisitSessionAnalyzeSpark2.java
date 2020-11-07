@@ -72,7 +72,7 @@ public class UserVisitSessionAnalyzeSpark2 {
 		// 查询本次指定的任务，获取任务的查询阐述
 		ITaskDAO taskDAO = DAOFactory.getTaskDAO();
 		// 根据j2EE产生的任务id到mysql表中查找对应的参数，j2ee会触发spark-submit arg类似的shell脚本
-		args = new String[]{"11"};		//测试用，本应该用命令行参数读取
+		args = new String[]{"11"};		//TEST:本应该用命令行参数读取
 		/*
 		 * INSERT INTO `www`.`task` (task_param)
 		("{'startDate':['2019-01-01'],'endDate':['2019-12-31'],'startAge':['10'],'endAge':['50']，'cities':['city10','city20']}" );
@@ -84,16 +84,17 @@ public class UserVisitSessionAnalyzeSpark2 {
 		
 		// 拿到指定时间范围的行文数据
 		JavaRDD<Row> actionRDD = getActionRDDByDateRange(sqlContext, taskParam); 
-		System.out.println(actionRDD.count()); //测试打印成功
+		//System.out.println(actionRDD.count()); //测试打印成功
 		
 		
 		// 聚合操作：按照session_id进行groupByKey操作，此时数据的粒度是session,
 		// 然后将session粒度的数据与用户信息数据进行join，得到完整用户信息，<sessionid, <sessionid, keyword,categoryId,  age,occupation,city,sex>>
 		JavaPairRDD<String, String> sessionId2AggrInfoRDD = aggregateBySession(sqlContext, actionRDD);
+		/*
 		System.out.println(sessionId2AggrInfoRDD.count()); //测试打印，解决Row.getLong(6)可能为null出错后成功
 		for (Tuple2<String, String> tuple : sessionId2AggrInfoRDD.take(5)){
 			System.out.println(tuple._2);		
-		}
+		}*/
 		
 		
 		// 第一版：用户搜索条件过滤
@@ -116,16 +117,18 @@ public class UserVisitSessionAnalyzeSpark2 {
 		 */
 		@SuppressWarnings("deprecation")
 		Accumulator<String> sessionAggStatAccumulator = sc.accumulator("", new SessionAggrStatAccumulator()); //初始化Accu
-		
+		// 注意；之前没有任何spark action动作的话，程序不会执行，累加器也会为空
 		JavaPairRDD<String, String> filteredSessionid2AggrInfoRDD = filterSessionAndAggrStat(sessionId2AggrInfoRDD, taskParam, sessionAggStatAccumulator);
-		System.out.println(filteredSessionid2AggrInfoRDD.count()); //测试打印，失败，结果为0？
+		System.out.println(filteredSessionid2AggrInfoRDD.count()); //ok，范围过小容易导致没有数据
+		/*
 		System.out.println("filtered session-------------------------------------");
 		for (Tuple2<String, String> tuple : filteredSessionid2AggrInfoRDD.take(5)){
 			System.out.println(tuple._2);		
-		}
+		}*/
 		
 		
 		// 计算出各个时长、步长的统计占比，源数据已经在Accumulator中了，数据封装到domain调用DAO写入mysql
+		// 注意：前面rdd没有action的话运算不会真正启动
 		calculateAndPersistAggrStat(sessionAggStatAccumulator.value(), task.getTaskid());
 		
 
@@ -366,7 +369,7 @@ public class UserVisitSessionAnalyzeSpark2 {
 		final String parameter = _parameter;
 		System.out.println("---TEST: input and parsed parameters-------------------------");
 		System.out.println(taskParam.toJSONString());
-		System.out.println(parameter);//测试
+		System.out.println(parameter);//TEST
 		
 		JavaPairRDD<String, String> filteredSession2AggrInfoRDD = sessionid2FullAggrInfoRDD.filter(new Function<Tuple2<String,String>, Boolean>() { // 匿名内部类
 			private static final long serialVersionUID = 1L;
@@ -474,9 +477,12 @@ public class UserVisitSessionAnalyzeSpark2 {
 	
 	/* 输入Accumulator.value的字符串
 	 * 计算时长，步长并持久化到mySQL中
+	 * 注意：在使用Accumulator前，没有任何spark actions算子，所以这里累加器是空
 	 */
 	private static void calculateAndPersistAggrStat(String value, Long taskid) {
 		// 时长
+		System.out.println("Test: Accumulator---------------");
+		System.out.println(value.toString());// 前面如果没有触发，累加器为空
 		long session_count = Long.valueOf(StringUtils.getFieldFromConcatString(value, "\\|", Constants.SESSION_COUNT));
 		long visit_length_1s_3s = Long.valueOf(StringUtils.getFieldFromConcatString(value, "\\|", Constants.TIME_PERIOD_1s_3s));  
 		long visit_length_4s_6s = Long.valueOf(StringUtils.getFieldFromConcatString(value, "\\|", Constants.TIME_PERIOD_4s_6s));
@@ -495,7 +501,7 @@ public class UserVisitSessionAnalyzeSpark2 {
 		long step_length_30_60 = Long.valueOf(StringUtils.getFieldFromConcatString(value, "\\|", Constants.STEP_PERIOD_30_60));
 		long step_length_60 = Long.valueOf(StringUtils.getFieldFromConcatString(value, "\\|", Constants.STEP_PERIOD_60));
 		
-		// 百分比,使用BigDecimal四舍五入
+		// 百分比,使用BigDecimal四舍五入，注意值都是Long类型，在计算百分比的时候一定要转换为double,否则小数会直接抹平
 		double visit_length_1s_3s_ratio = NumberUtils.formatDouble((double) visit_length_1s_3s / (double) session_count, 2);
 		double visit_length_4s_6s_ratio = NumberUtils.formatDouble((double) visit_length_4s_6s / (double) session_count, 2);
 		double visit_length_7s_9s_ratio = NumberUtils.formatDouble((double) visit_length_7s_9s / (double) session_count, 2);

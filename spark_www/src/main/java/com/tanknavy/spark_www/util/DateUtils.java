@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat; // formatting (date → text), parsing (text 
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.hadoop.classification.InterfaceAudience.Public;
+
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.Static;
+
 /**
  * SimpleDateFormat is a concrete class for formatting and parsing dates in a locale-sensitive manner. 
  * It allows for formatting (date → text), parsing (text → date), and normalization
@@ -151,6 +155,42 @@ public class DateUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * 日期格式格式化为"yyyyMMdd"格式
+	 * @param date
+	 * @return
+	 */
+	public static String formatDateKey(Date date){
+		final SimpleDateFormat DATEKEY_FORMAT = new SimpleDateFormat("yyyyMMdd");
+		return DATEKEY_FORMAT.format(date);
+	}
+	
+	/**
+	 * 字符串日期解析为"yyyyMMdd"时间格式
+	 * @param date
+	 * @return
+	 */
+	public static Date parseDateKey(String date) {
+		final SimpleDateFormat DATEKEY_FORMAT = new SimpleDateFormat("yyyyMMdd");
+		try {
+			return DATEKEY_FORMAT.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 格式化日期到分钟级别"yyyyMMddHHmm"
+	 * @param date
+	 * @return
+	 */
+	public static String formatTimeMinute(Date date){
+		final SimpleDateFormat DATEKEY_FORMAT = new SimpleDateFormat("yyyyMMddHHmm");
+		return DATEKEY_FORMAT.format(date);
 	}
 	
 }
